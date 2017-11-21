@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CS 496 Final Project</title>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="style.css" type="text/css">
+	</head>
+	<body>
+		<div class="container" id="main">
+			
+			<div class="col-xs-9"> <h1 class="text-primary">Oregon State University </h1> </div>
+			<div class="col-xs-9"> <h2 class="text-primary"> Michael Ennis<h2></div> 
+		
+			<div class="cox-xs-6">
+				<ul>
+					<li> Use this webpage to generate a token so that you can access the JSON Rest API </li>
+					<li> Click below to start the process, where you will redirect to Google+ to authorize access. </li>
+					<li> Afterwards use the Token as your id in API requests. </li> 
+				</ul>
+			</div>
+			
+			<div class="col-xs-3"><button onclick="location.href='https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=1024414908095-7rdg82irp2utqa49sjnoj3h26f7mmoo3.apps.googleusercontent.com&redirect_uri=https://coinaccountosu-186723.appspot.com/oauth&scope=email&state={{ state }}';">Start</button></div>
+		
+		</div>
+	</body>
+</html>

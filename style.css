@@ -1,0 +1,18 @@
+body {
+	background-color: #DCDCDC
+}
+
+#main {
+	background-color: white;
+	border-style: solid;
+	border-width: 2px;
+	width: 50%;
+}
+
+h1 {
+	text-align: center; 
+}
+
+h2 {
+	text-align: center; 
+}
