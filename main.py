@@ -258,14 +258,14 @@ class BalanceHandler(webapp2.RequestHandler):
 
 #START ACCOUNT HANDLER#
 def getAccount(token):	
-	 Set up the header string for requesting information.
+	#Set up the header string for requesting information.
 	auth_header = 'Bearer ' + token
 	
 	headers = {
 		'Authorization' : auth_header
 	}
 	
-	 Request the profile information, store in json. 
+	#Request the profile information, store in json. 
 	result = urlfetch.fetch(url="https://www.googleapis.com/plus/v1/people/me", headers = headers, method=urlfetch.GET)
 	#Pause or results are processed before they are received.
 	time.sleep(0.5)
