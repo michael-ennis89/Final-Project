@@ -431,13 +431,11 @@ class DisplayHandler(webapp2.RequestHandler):
 			# Grab the required variables from the json and place in template.
 			givenName = results['name']['givenName']
 			familyName = results['name']['familyName']
-			email = results['emails']['value']
 			urls = results['url']
 			
 			template_values = {
 				'firstName' : givenName,
 				'lastName' : familyName,
-				'email': email,
 				'url' : urls,
 				'token' : token
 			}
