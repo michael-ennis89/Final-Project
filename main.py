@@ -258,37 +258,36 @@ class BalanceHandler(webapp2.RequestHandler):
 
 #START ACCOUNT HANDLER#
 def getAccount(token):	
-	# Set up the header string for requesting information.
-	#auth_header = 'Bearer ' + token
+	 Set up the header string for requesting information.
+	auth_header = 'Bearer ' + token
 	
-	#headers = {
-	#	'Authorization' : auth_header
-	#}
+	headers = {
+		'Authorization' : auth_header
+	}
 	
-	# Request the profile information, store in json. 
-	#result = urlfetch.fetch(url="https://www.googleapis.com/plus/v1/people/me", headers = headers, method=urlfetch.GET)
-	# Pause or results are processed before they are received.
-	#time.sleep(0.5)
-	#results = json.loads(result.content)
+	 Request the profile information, store in json. 
+	result = urlfetch.fetch(url="https://www.googleapis.com/plus/v1/people/me", headers = headers, method=urlfetch.GET)
+	#Pause or results are processed before they are received.
+	time.sleep(0.5)
+	results = json.loads(result.content)
+	#Check if user is a Google Plus user
+	isPlusUser = results['isPlusUser']
 	
-	# Check if user is a Google Plus user
-	#isPlusUser = results['isPlusUser']
-	
-	# Error code to send back. 
-	#errorCode = "error"
+	#Error code to send back. 
+	errorCode = "error"
 		
 	#If the user is a plus user, display information.
-	#if(isPlusUser):
-	#	name = results['name']['givenName'] + results['name']['familyName']
-	#	hash_object = hashlib.sha256(name)
-	#	hex_dig = hash_object.hexdigest()
-	#	return hex_dig
-	#else:
-	#	return errorCode
+	if(isPlusUser):
+		url = results['url']
+		hash_object = hashlib.sha256(url)
+		hex_dig = hash_object.hexdigest()
+		return hex_dig
+	else:
+		return errorCode
 	
-	hash_object = hashlib.sha256(token)
-	hex_dig = hash_object.hexdigest()
-	return hex_dig
+	#hash_object = hashlib.sha256(token)
+	#hex_dig = hash_object.hexdigest()
+	#return hex_dig
 #END ACCOUNT HANDLER#
 
 #START CHECK COIN#
