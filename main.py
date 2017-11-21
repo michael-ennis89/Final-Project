@@ -65,16 +65,19 @@ class BuyHandler(webapp2.RequestHandler):
 			
 	def get(self,id=None):
 		if id:
+			self.response.set_status(400)
 		else:
 			self.response.set_status(400)
 			
 	def patch(self, id=None):
 		if id:
+			self.response.set_status(400)			
 		else:
 			self.response.set_status(400)
 			
 	def delete(self, id=None):
 		if id:
+			self.response.set_status(400)			
 		else:
 			self.response.set_status(400)			
 #END BUY HANDLER#
@@ -83,58 +86,67 @@ class BuyHandler(webapp2.RequestHandler):
 class SellHandler(webapp2.RequestHandler):
 	def post(self, id=None):
 		if id:
+			self.response.set_status(400)			
 		else:
 			self.response.set_status(400)
 			
 	def get(self, id=None):
 		if id:
+			self.response.set_status(400)			
 		else:
 			self.response.set_status(400)
 			
 	def patch(self, id=None):
 		if id:
+			self.response.set_status(400)			
 		else:
 			self.response.set_status(400)
 			
 	def delete(self, id=None):
 		if id:
+			self.response.set_status(400)			
 		else:
 			self.response.set_status(400)
 #END SELL HANDLER#
 
 #START BALANCE HANDLER#
 class BalanceHandler(webapp2.RequestHandler):
+	def get(self, id=None):
+		if id:
+			self.response.set_status(400)
+		else:
+			self.response.set_status(400)
 #END BALANCE HANDLER#
 
 #START ACCOUNT HANDLER#
 def getAccount(token):	
-		# Set up the header string for requesting information.
-		auth_header = 'Bearer ' + token
+	# Set up the header string for requesting information.
+	auth_header = 'Bearer ' + token
+	
+	headers = {
+		'Authorization' : auth_header
+	}
+	
+	# Request the profile information, store in json. 
+	result = urlfetch.fetch(url="https://www.googleapis.com/plus/v1/people/me", headers = headers, method=urlfetch.GET)
+	# Pause or results are processed before they are received.
+	time.sleep(0.5)
+	results = json.loads(result.content)
+	
+	# Check if user is a Google Plus user
+	isPlusUser = results['isPlusUser']
+	
+	# Error code to send back. 
+	errorCode = "error"
 		
-		headers = {
-			'Authorization' : auth_header
-		}
-		
-		# Request the profile information, store in json. 
-		result = urlfetch.fetch(url="https://www.googleapis.com/plus/v1/people/me", headers = headers, method=urlfetch.GET)
-		# Pause or results are processed before they are received.
-		time.sleep(0.5)
-		results = json.loads(result.content)
-		
-		# Check if user is a Google Plus user
-		isPlusUser = results['isPlusUser']
-		
-		# Error code to send back. 
-		errorCode = "error"
-		
-		#If the user is a plus user, display information.
-		if(isPlusUser):
-			name = results['name']['givenName'] + results['name']['familyName']
-			hash_object = hashlib.sha256(name)
-			hex_dig = hash_object.hexdigest()
-			return hex_dig
-		else:
-			return errorCode
+	#If the user is a plus user, display information.
+	if(isPlusUser):
+		name = results['name']['givenName'] + results['name']['familyName']
+		hash_object = hashlib.sha256(name)
+		hex_dig = hash_object.hexdigest()
+		return hex_dig
+	else:
+		return errorCode
 #END ACCOUNT HANDLER#
 
 #START CHECK COIN#
@@ -154,9 +166,10 @@ def initCoin():
 	coins = Coin.query()
 	coinList = ["USDT-BTC", "USDT-NEO", "USDT_ETH", "USDT-BCC", "USDT-LTC", "USDT-LTC", "USDT-XRP", "USDT-OMG", "USDT-ETC", "USDT-ZEC", "USDT-DASH", "USDT-XMR"]
 	if coins is None:
-		content = urllib2.urlopen(https://bittrex.com/api/v1.1/public/getmarketsummaries).read()
+		content = urllib2.urlopen("https://bittrex.com/api/v1.1/public/getmarketsummaries").read()
 		for result in content:
-			if(content['result']['MarketName'] is in coinList):
+			test = content['result']['MarketName']
+			if(test in coinList):
 				new_coin = Coin()
 				new_coin.id = new_coin.key.urlsafe()
 				new_coin.market = content['result']['MarketName']
@@ -170,11 +183,11 @@ def initCoin():
 
 #START UPDATE COIN DATABASE#
 def updateCoin():
-coinList = ["USDT-BTC", "USDT-NEO", "USDT_ETH", "USDT-BCC", "USDT-LTC", "USDT-LTC", "USDT-XRP", "USDT-OMG", "USDT-ETC", "USDT-ZEC", "USDT-DASH", "USDT-XMR"]
-	content = urllib2.urlopen(https://bittrex.com/api/v1.1/public/getmarketsummaries).read()
+	coinList = ["USDT-BTC", "USDT-NEO", "USDT_ETH", "USDT-BCC", "USDT-LTC", "USDT-LTC", "USDT-XRP", "USDT-OMG", "USDT-ETC", "USDT-ZEC", "USDT-DASH", "USDT-XMR"]
+	content = urllib2.urlopen("https://bittrex.com/api/v1.1/public/getmarketsummaries").read()
 	coins = query.Coins()
 	for result in content:
-		if(content['result']['MarketName'] is in coinList):
+		if(content['result']['MarketName'] in coinList):
 			coin = content['result']['MarketName']
 			for coin in coins:
 				if(coin == coins.market):
@@ -197,7 +210,7 @@ app = webapp2.WSGIApplication([
     ('/', MainPage),
 	('/buy/(.*)', BuyHandler),
 	('/sell/(.*)', SellHandler),
-	('/balance/(.*)', BalanceHandler),
-	('/coin/(.*)', CoinHandler)
+	('/balance/(.*)', BalanceHandler)
+	#('/coin/(.*)', CoinHandler)
 ], debug=True)
 #END APP#
