@@ -1,7 +1,7 @@
 ############main.py##############
 ###Michael Ennis Final Project###
 #CS496 - Oregon State University#
-########## 11/19/2017 ###########
+########## 11/26/2017 ###########
 
 from google.appengine.ext import ndb
 from datetime import datetime
@@ -268,11 +268,14 @@ def getAccount(token):
 	#Pause or results are processed before they are received.
 	time.sleep(0.5)
 	results = json.loads(result.content)
-	#Check if user is a Google Plus user
-	isPlusUser = results['isPlusUser']
-	
+	#Check for Errors
 	#Error code to send back. 
 	errorCode = "error"
+	#Check if user is a Google Plus user
+	try:
+		isPlusUser = results['isPlusUser']
+	except:
+		return errorCode
 		
 	#If the user is a plus user, display information.
 	if(isPlusUser):
