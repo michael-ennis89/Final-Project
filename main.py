@@ -31,10 +31,10 @@ class Account(ndb.Model):
 	id = ndb.StringProperty()
 	owner = ndb.StringProperty()
 	coin = ndb.StringProperty(required=True)
-	type = ndb.StringProperty()
+	type = ndb.StringProperty(required=True)
 	date = ndb.StringProperty()
-	price = ndb.FloatProperty()
-	amount = ndb.FloatProperty()
+	price = ndb.FloatProperty(required=True)
+	amount = ndb.FloatProperty(required=True)
 	total = ndb.FloatProperty()
 #END ACCOUNT DEFINITION#
 
@@ -89,7 +89,6 @@ class BuyHandler(webapp2.RequestHandler):
 			for account in accounts:
 				if(account.type == "buy"):
 					buy_dict = account.to_dict()
-					#buy_dict['self'] = '/buy/' + Account.key.urlsafe()
 					buyList.append(buy_dict)
 			self.response.write(json.dumps(buyList))
 		else:
@@ -173,7 +172,6 @@ class SellHandler(webapp2.RequestHandler):
 			for account in accounts:
 				if(account.type == "sell"):
 					sell_dict = account.to_dict()
-					#buy_dict['self'] = '/buy/' + Account.key.urlsafe()
 					sellList.append(sell_dict)
 			self.response.write(json.dumps(sellList))
 		else:
@@ -256,7 +254,7 @@ class BalanceHandler(webapp2.RequestHandler):
 			self.response.set_status(400)
 #END BALANCE HANDLER#
 
-#START ACCOUNT HANDLER#
+#START ACCOUNT FUNCTION#
 def getAccount(token):	
 	#Set up the header string for requesting information.
 	auth_header = 'Bearer ' + token
@@ -288,18 +286,18 @@ def getAccount(token):
 	#hash_object = hashlib.sha256(token)
 	#hex_dig = hash_object.hexdigest()
 	#return hex_dig
-#END ACCOUNT HANDLER#
+#END ACCOUNT FUNCTION#
 
-#START CHECK COIN#
+#START CHECK COIN FUNCTION#
 def checkCoin(coinCheck):
 	coins = Coin.query(Coin.market == coinCheck).get()
 	if coins is None:
 		return 0
 	else:
 		return 1
-#END CHECK COIN#
+#END CHECK COIN FUNCTION#
 
-#START INITIALIZE OR UPDATE COINS PRICES#
+#START INITIALIZE OR UPDATE COINS PRICES FUNCTION#
 def updateCoin():
 	content = urllib2.urlopen("https://bittrex.com/api/v1.1/public/getmarketsummaries")
 	json_object = json.load(content)
@@ -323,9 +321,7 @@ def updateCoin():
 				coin_to_update.low = float(i['Low'])
 				coin_to_update.last = float(i['Last'])
 				coin_to_update.put()
-	
-		
-#END INITIALIZE OR UPDATE COINS PRICES#
+#END INITIALIZE OR UPDATE COINS PRICES FUNCTION#
 
 # [START MAINPAGE]
 class MainPage(webapp2.RequestHandler):
